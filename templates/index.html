@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brain MRI Tumor Detection</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f3f6fb;
+            color: #182235;
+        }
+
+        header {
+            background: #102a43;
+            color: white;
+            padding: 28px 16px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0 0 10px;
+        }
+
+        header p {
+            margin: 0;
+            color: #d9e5f2;
+        }
+
+        main {
+            max-width: 850px;
+            margin: 35px auto;
+            padding: 0 18px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 14px;
+            padding: 26px;
+            margin-bottom: 22px;
+            box-shadow: 0 5px 20px #102a4310;
+        }
+
+        input[type="file"] {
+            display: block;
+            width: 100%;
+            margin: 20px 0;
+        }
+
+        button {
+            background: #1769aa;
+            color: white;
+            border: none;
+            padding: 13px 22px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background: #0f5087;
+        }
+
+        .result-image {
+            max-width: 100%;
+            max-height: 350px;
+            display: block;
+            margin: 20px auto;
+            border-radius: 10px;
+        }
+
+        .prediction {
+            font-size: 23px;
+            font-weight: bold;
+            color: #1769aa;
+        }
+
+        .probability-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin: 16px 0 6px;
+        }
+
+        .bar {
+            height: 10px;
+            background: #e6edf5;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .fill {
+            height: 100%;
+            background: #1769aa;
+        }
+
+        .error {
+            color: #b42318;
+            background: #fff1f0;
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        .warning {
+            font-size: 13px;
+            line-height: 1.6;
+            color: #586779;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #586779;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Brain MRI Tumor Detection</h1>
+        <p>Deep learning image classification demonstration</p>
+    </header>
+
+    <main>
+        <section class="card">
+            <h2>Upload an MRI image</h2>
+            <p>Select a JPG, JPEG, or PNG image for model classification.</p>
+
+            <form method="POST" enctype="multipart/form-data">
+                <input
+                    type="file"
+                    name="mri_image"
+                    accept=".jpg,.jpeg,.png"
+                    required
+                >
+                <button type="submit">Analyze Image</button>
+            </form>
+
+            {% if error %}
+                <p class="error">{{ error }}</p>
+            {% endif %}
+        </section>
+
+        {% if prediction %}
+        <section class="card">
+            <h2>Prediction result</h2>
+
+            {% if image_url %}
+                <img
+                    src="{{ image_url }}"
+                    alt="Uploaded MRI"
+                    class="result-image"
+                >
+            {% endif %}
+
+            <p>Predicted class:</p>
+            <div class="prediction">{{ prediction }}</div>
+
+            <h3>Model output probabilities</h3>
+
+            {% for item in results %}
+                <div class="probability-row">
+                    <span>{{ item.class_name }}</span>
+                    <strong>{{ item.percentage }}</strong>
+                </div>
+
+                <div class="bar">
+                    <div
+                        class="fill"
+                        style="width: {{ item.probability * 100 }}%"
+                    ></div>
+                </div>
+            {% endfor %}
+        </section>
+        {% endif %}
+
+        <section class="card">
+            <h3>Important medical disclaimer</h3>
+            <p class="warning">
+                This is an educational machine-learning demonstration,
+                not a diagnostic medical device. Its predictions may be
+                incorrect and must not be used to diagnose or rule out
+                a brain tumor. Medical decisions require evaluation by
+                a qualified healthcare professional.
+            </p>
+        </section>
+    </main>
+
+    <footer>
+        Brain MRI Classification Project
+    </footer>
+</body>
+</html>

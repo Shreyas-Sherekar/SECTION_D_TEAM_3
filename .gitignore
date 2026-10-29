@@ -1,0 +1,19 @@
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.env
+venv/
+.venv/
+
+# Dataset files
+data/
+datasets/
+
+# User uploads
+static/uploads/*
+!static/uploads/.gitkeep
+
+# Model files are stored separately
+models/*.keras
+models/*.h5
+models/*.weights.h5
